@@ -44,16 +44,10 @@ jobs:
            useradd -m sb74
            echo "sb74 ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
            
-           echo "--- Checking file before chmod ---"
-           ls -la install.sh
-           file install.sh
-           
            echo "--- Making script executable ---"
            chmod +x install.sh
            
-           echo "--- Checking file after chmod ---"
-           ls -la install.sh
-           
-           echo "--- Running script ---"
-           echo "y" | sudo -u sb74 env DRY_RUN=true CI=true ./install.sh
+           echo "--- Running script as root with SUDO_USER set ---"
+           echo "y" | SUDO_USER=sb74 DRY_RUN=true ./install.sh
          '
+
