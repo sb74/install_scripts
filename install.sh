@@ -2,6 +2,14 @@
 # Fail on error, unset variable, or pipe failure
 set -euo pipefail
 
+# Debug mode for CI
+if [[ "${CI:-}" == "true" ]] || [[ "${DEBUG:-}" == "true" ]]; then
+  set -x
+fi
+
+# Error handler
+trap 'echo "ERROR: Line $LINENO failed with exit code $?" >&2' ERR
+
 # --- CONFIGURATION ---
 # Improved User Detection: Automatically detect the user who ran sudo.
 # Fallback to 'sb74' if detection fails.
@@ -151,7 +159,7 @@ function setup_nvidia_wayland() {
     run_cmd sed -i 's/MODULES=(/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm /' /etc/mkinitcpio.conf
     run_cmd mkinitcpio -P
   else
-    echo "NVIDIA modules already in mkinitcpio.conf."
+    echo "NVIDIA modules already in mkinitcpio.conf"
   fi
 
   # Enable DRM kernel mode setting
@@ -160,7 +168,7 @@ function setup_nvidia_wayland() {
     run_cmd sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="/&nvidia-drm.modeset=1 /' /etc/default/grub
     run_cmd grub-mkconfig -o /boot/grub/grub.cfg
   else
-    echo "NVIDIA DRM modeset already enabled."
+    echo "NVIDIA DRM modeset already enabled"
   fi
 
   echo "⚠️ REBOOT REQUIRED for NVIDIA changes to take effect!"
@@ -266,7 +274,7 @@ function run_all() {
   enable_services
   setup_dotfiles_chezmoi
   setup_neovim
-  echo -e "\n\033[1;32m✅ Full setup complete! Reboot and enjoy.\033[0m"
+  echo -e "\n\033[1;32m✅ Full setup complete! Reboot and enjoy your greetd + Hyprland system.\033[0m"
 }
 
 # --- Main Logic ---
