@@ -278,7 +278,9 @@ function run_all() {
 }
 
 # --- Main Logic ---
-clear
+if [[ "${CI:-}" != "true" ]]; then
+  clear
+fi
 echo "========================================"
 echo "  Arch Hyprland Setup Script  "
 echo "  User: $USER_NAME ($USER_HOME)"
