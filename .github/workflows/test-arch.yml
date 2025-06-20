@@ -1,50 +1,41 @@
 name: Test Arch Setup Script (Dry Run)
 
 on:
- push:
-   paths:
-     - "install.sh"
-     - ".github/workflows/*.yml"
-     - ".github/workflows/*.yaml"
- pull_request:
-   paths:
-     - "install.sh"
-     - ".github/workflows/*.yml"
-     - ".github/workflows/*.yaml"
+  push:
+    paths:
+      - "install.sh"
+      - ".github/workflows/*.yml"
+      - ".github/workflows/*.yaml"
+  pull_request:
+    paths:
+      - "install.sh"
+      - ".github/workflows/*.yml"
+      - ".github/workflows/*.yaml"
 
 jobs:
- test-arch:
-   name: 🧪 Dry Run on Arch Linux
-   runs-on: ubuntu-latest
+  test-arch:
+    name: 🧪 Dry Run on Arch Linux
+    runs-on: ubuntu-latest
 
-   container:
-     image: archlinux:base
+    container:
+      image: archlinux:latest
 
-   steps:
-     - name: 📥 Checkout repo
-       uses: actions/checkout@v4
+    steps:
+      - name: 📥 Checkout repo
+        uses: actions/checkout@v4
 
-     - name: 🛠 Update system and install base tools
-       run: |
-         pacman -Syu --noconfirm
-         pacman -S --noconfirm sudo git base-devel fish coreutils util-linux
+      - name: 🛠 Setup Arch environment
+        run: |
+          pacman-key --init
+          pacman -Syu --noconfirm
+          pacman -S --noconfirm sudo git base-devel fish bash coreutils
 
-     - name: 👤 Setup user
-       run: |
-         useradd -m -s /bin/bash sb74
-         echo "sb74 ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+      - name: 👤 Setup user
+        run: |
+          useradd -m -s /bin/bash sb74
+          echo "sb74 ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
-     - name: 🔍 Debug and fix permissions
-       run: |
-         ls -la install.sh
-         /bin/chmod +x install.sh
-         ls -la install.sh
-
-     - name: 🚀 Run setup script in DRY_RUN mode
-       env:
-         DRY_RUN: true
-         CI: true
-       run: |
-         export DRY_RUN=true
-         export CI=true
-         sudo -E -u sb74 bash -c 'cd '"$PWD"' && echo "y" | ./install.sh'
+      - name: 🚀 Run setup script
+        run: |
+          chmod +x install.sh
+          echo "y" | sudo -u sb74 env DRY_RUN=true CI=true ./install.sh
