@@ -266,7 +266,7 @@ function run_all() {
   enable_services
   setup_dotfiles_chezmoi
   setup_neovim
-  echo -e "\n\033[1;32m✅ Full setup complete! Reboot and enjoy your greetd + Hyprland system.\033[0m"
+  echo -e "\n\033[1;32m✅ Full setup complete! Reboot and enjoy.\033[0m"
 }
 
 # --- Main Logic ---

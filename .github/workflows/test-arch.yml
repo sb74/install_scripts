@@ -29,4 +29,5 @@ jobs:
       - name: 🚀 Run setup script in DRY_RUN mode
         run: |
           chmod +x ./install.sh
-          DRY_RUN=true sudo -E ./install.sh <<< "y"
+          echo "y" | DRY_RUN=true sudo -E ./install.sh
+
