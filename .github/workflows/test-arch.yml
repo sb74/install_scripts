@@ -1,60 +1,59 @@
 name: Test Arch Setup Script (Dry Run)
 
 on:
-  push:
-    paths:
-      - "install.sh"
-      - ".github/workflows/*.yml"
-      - ".github/workflows/*.yaml"
-  pull_request:
-    paths:
-      - "install.sh"
-      - ".github/workflows/*.yml"
-      - ".github/workflows/*.yaml"
+ push:
+   paths:
+     - "install.sh"
+     - ".github/workflows/*.yml"
+     - ".github/workflows/*.yaml"
+ pull_request:
+   paths:
+     - "install.sh"
+     - ".github/workflows/*.yml"
+     - ".github/workflows/*.yaml"
 
 jobs:
-  test-arch:
-    name: 🧪 Dry Run on Arch Linux
-    runs-on: ubuntu-latest
+ test-arch:
+   name: 🧪 Dry Run on Arch Linux
+   runs-on: ubuntu-latest
 
-    steps:
-      - name: 📥 Checkout repo
-        uses: actions/checkout@v4
+   steps:
+     - name: 📥 Checkout repo
+       uses: actions/checkout@v4
 
-      - name: 🐳 Run in Arch container
-        run: |
-          docker run --rm -v $PWD:/workspace -w /workspace archlinux:latest bash -c '
-            set -ex
-            
-            echo "--- Debug workspace ---"
-            pwd
-            ls -la
-            
-            echo "--- Initializing Pacman keyring ---"
-            pacman-key --init
-            pacman-key --populate archlinux
-            
-            echo "--- Updating system ---"
-            pacman -Syu --noconfirm
-            
-            echo "--- Installing dependencies ---"
-            pacman -S --noconfirm sudo git base-devel fish coreutils
-            
-            echo "--- Creating user ---"
-            useradd -m sb74
-            echo "sb74 ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-            
-            echo "--- Checking file before chmod ---"
-            ls -la install.sh
-            file install.sh
-            
-            echo "--- Making script executable ---"
-            chmod +x install.sh
-            
-            echo "--- Checking file after chmod ---"
-            ls -la install.sh
-            
-            echo "--- Running script ---"
-            echo "y" | sudo -u sb74 env DRY_RUN=true CI=true ./install.sh
-          '
-
+     - name: 🐳 Run in Arch container
+       run: |
+         docker run --rm -v $PWD:/workspace -w /workspace archlinux:latest bash -c '
+           set -ex
+           
+           echo "--- Debug workspace ---"
+           pwd
+           ls -la
+           
+           echo "--- Initializing Pacman keyring ---"
+           pacman-key --init
+           pacman-key --populate archlinux
+           
+           echo "--- Updating system ---"
+           pacman -Syu --noconfirm
+           
+           echo "--- Installing dependencies ---"
+           pacman -S --noconfirm sudo git base-devel fish coreutils ncurses
+           
+           echo "--- Creating user ---"
+           useradd -m sb74
+           echo "sb74 ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+           
+           echo "--- Checking file before chmod ---"
+           ls -la install.sh
+           file install.sh
+           
+           echo "--- Making script executable ---"
+           chmod +x install.sh
+           
+           echo "--- Checking file after chmod ---"
+           ls -la install.sh
+           
+           echo "--- Running script ---"
+           echo "y" | sudo -u sb74 env DRY_RUN=true CI=true ./install.sh
+         '
