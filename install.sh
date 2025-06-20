@@ -151,7 +151,7 @@ function setup_nvidia_wayland() {
     run_cmd sed -i 's/MODULES=(/MODULES=(nvidia nvidia_modeset nvidia_uvm nvidia_drm /' /etc/mkinitcpio.conf
     run_cmd mkinitcpio -P
   else
-    echo "NVIDIA modules already in mkinitcpio.conf"
+    echo "NVIDIA modules already in mkinitcpio.conf."
   fi
 
   # Enable DRM kernel mode setting
