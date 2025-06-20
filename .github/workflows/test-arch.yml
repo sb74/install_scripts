@@ -39,3 +39,4 @@ jobs:
         run: |
           chmod +x install.sh
           echo "y" | sudo -u sb74 env DRY_RUN=true CI=true ./install.sh
+
