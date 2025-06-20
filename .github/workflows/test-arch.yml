@@ -1,0 +1,32 @@
+name: Test Arch Setup Script (Dry Run)
+
+on:
+  push:
+    paths:
+      - "arch-setup.sh"
+  pull_request:
+    paths:
+      - "arch-setup.sh"
+
+jobs:
+  test-arch:
+    name: 🧪 Dry Run on Arch Linux
+    runs-on: ubuntu-latest
+
+    container:
+      image: archlinux:base
+
+    steps:
+      - name: 📥 Checkout repo
+        uses: actions/checkout@v3
+
+      - name: 🛠 Install base tools
+        run: |
+          pacman -Sy --noconfirm sudo git base-devel fish
+          useradd -m sb74
+          echo "sb74 ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+      - name: 🚀 Run setup script in DRY_RUN mode
+        run: |
+          chmod +x ./arch-setup.sh
+          DRY_RUN=true sudo -E ./arch-setup.sh <<< "y"
