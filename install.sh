@@ -140,6 +140,7 @@ function run_all() {
 
 # === INTERACTIVE MODE ===
 echo "==== Arch Setup Script for $USER_NAME ===="
+echo "=========================================="
 
 if confirm "Run full setup?"; then
   run_all
