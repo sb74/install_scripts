@@ -46,8 +46,7 @@ jobs:
            
            echo "--- Making script executable ---"
            chmod +x install.sh
-           
+
            echo "--- Running script as root with SUDO_USER set ---"
-           echo "y" | SUDO_USER=sb74 DRY_RUN=true ./install.sh
-         '
+           echo "y" | TERM=dumb SUDO_USER=sb74 DRY_RUN=true CI=true ./install.sh
 
