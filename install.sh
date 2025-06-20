@@ -160,7 +160,7 @@ function setup_nvidia_wayland() {
     run_cmd sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="/&nvidia-drm.modeset=1 /' /etc/default/grub
     run_cmd grub-mkconfig -o /boot/grub/grub.cfg
   else
-    echo "NVIDIA DRM modeset already enabled"
+    echo "NVIDIA DRM modeset already enabled."
   fi
 
   echo "⚠️ REBOOT REQUIRED for NVIDIA changes to take effect!"

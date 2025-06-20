@@ -27,7 +27,9 @@ jobs:
           echo "sb74 ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
       - name: 🚀 Run setup script in DRY_RUN mode
+        env:
+          DRY_RUN: true
+          CI: true
         run: |
-          chmod +x ./install.sh
-          echo "y" | DRY_RUN=true sudo -E ./install.sh
-
+          chmod +x install.sh
+          sudo -E -u sb74 bash -c 'cd $PWD && echo "y" | ./install.sh'
