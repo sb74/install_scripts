@@ -3,10 +3,10 @@ name: Test Arch Setup Script (Dry Run)
 on:
   push:
     paths:
-      - "arch-setup.sh"
+      - "install.sh"
   pull_request:
     paths:
-      - "arch-setup.sh"
+      - "install.sh"
 
 jobs:
   test-arch:
