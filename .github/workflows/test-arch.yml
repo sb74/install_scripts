@@ -28,5 +28,5 @@ jobs:
 
       - name: 🚀 Run setup script in DRY_RUN mode
         run: |
-          chmod +x ./arch-setup.sh
-          DRY_RUN=true sudo -E ./arch-setup.sh <<< "y"
+          chmod +x ./install.sh
+          DRY_RUN=true sudo -E ./install.sh <<< "y"
